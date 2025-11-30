@@ -30,11 +30,11 @@ cipher = plaintext XOR keystream
 ```
 app/
  ├── Controllers/
- │    └── PersonController.php
+ │    └── Contacts.php
  ├── Models/
- │    └── PersonModel.php
+ │    └── ContactModel.php
  └── Helpers/
-      └── xor_helper.php
+      └── stream_xor_helper.php
 public/
 .env
 README.md
@@ -49,7 +49,15 @@ CREATE TABLE persons (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     email VARCHAR(255),
-    nonce VARCHAR(64),
+    nonce VARCHAR(64),	CREATE TABLE `contacts` (
+ `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+ `name_enc` varchar(512) NOT NULL,
+ `email_enc` varchar(512) NOT NULL,
+ `nonce_hex` varchar(64) NOT NULL,
+ `created_at` datetime DEFAULT NULL,
+ `updated_at` datetime DEFAULT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -59,11 +67,12 @@ Set pada `.env`:
 
 ```
 database.default.hostname = localhost
-database.default.database = xor_crud
+database.default.database = db_kriptografi
 database.default.username = root
-database.default.password =
+database.default.password = 
 database.default.DBDriver = MySQLi
-encryption.key = "MY_SUPER_SECRET_KEY_32CHARS"
+database.default.DBPrefix =
+database.default.port = 3306
 ```
 
 ## 🚀 Menjalankan Aplikasi
@@ -75,19 +84,13 @@ php spark serve
 
 Akses:
 ```
-http://localhost:8080/person
+http://localhost:8080/contacts
 ```
 
-## 📘 Penjelasan File xor_helper.php
+## 📘 Penjelasan File stream_xor_helper.php
 
 ### xor_encrypt_hex()
 Enkripsi plaintext + XOR + output hex.
 
 ### xor_decrypt_hex()
 Dekripsi dari cipher hex menjadi plaintext.
-
-## 🧪 Keamanan
-Hanya untuk simulasi akademik, bukan untuk produksi.
-
-## 📄 Lisensi
-Bebas digunakan untuk pembelajaran dan tugas akhir.
