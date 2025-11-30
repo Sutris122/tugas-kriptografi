@@ -1,60 +1,93 @@
-# CodeIgniter 4 Framework
+# Simulasi CRUD dengan Enkripsi Stream XOR – CodeIgniter 4
 
-## What is CodeIgniter?
+Proyek ini merupakan aplikasi sederhana berbasis **CodeIgniter 4** yang menampilkan simulasi proses **CRUD (Create, Read, Update, Delete)** pada database **MySQL**, dengan tambahan fitur **kriptografi simetris menggunakan Stream Cipher XOR**.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## ✨ Fitur Utama
 
-This repository holds the distributable version of the framework.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+### 1. CRUD Lengkap
+- Tambah data
+- Tampilkan semua data
+- Update data
+- Hapus data
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+### 2. Enkripsi Stream XOR
+Menggunakan HMAC-SHA256 sebagai generator keystream, dengan nonce unik per record.
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+### 3. Dekripsi Otomatis
+Sistem otomatis mendekripsi data ketika ditampilkan.
 
-## Important Change with index.php
+## 🔐 Penjelasan Metode Enkripsi
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+Skema enkripsi:
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+```
+keystream = HMAC_SHA256(key, nonce || counter)
+cipher = plaintext XOR keystream
+```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+## 📂 Struktur Proyek
 
-## Repository Management
+```
+app/
+ ├── Controllers/
+ │    └── PersonController.php
+ ├── Models/
+ │    └── PersonModel.php
+ └── Helpers/
+      └── xor_helper.php
+public/
+.env
+README.md
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## ⚙️ Konfigurasi Database
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+Buat tabel:
 
-## Contributing
+```sql
+CREATE TABLE persons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    nonce VARCHAR(64),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
 
-We welcome contributions from the community.
+Set pada `.env`:
 
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
+```
+database.default.hostname = localhost
+database.default.database = xor_crud
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+encryption.key = "MY_SUPER_SECRET_KEY_32CHARS"
+```
 
-## Server Requirements
+## 🚀 Menjalankan Aplikasi
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+```
+composer install
+php spark serve
+```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+Akses:
+```
+http://localhost:8080/person
+```
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+## 📘 Penjelasan File xor_helper.php
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+### xor_encrypt_hex()
+Enkripsi plaintext + XOR + output hex.
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### xor_decrypt_hex()
+Dekripsi dari cipher hex menjadi plaintext.
+
+## 🧪 Keamanan
+Hanya untuk simulasi akademik, bukan untuk produksi.
+
+## 📄 Lisensi
+Bebas digunakan untuk pembelajaran dan tugas akhir.
