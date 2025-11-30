@@ -25,7 +25,7 @@ keystream = HMAC_SHA256(key, nonce || counter)
 cipher = plaintext XOR keystream
 ```
 
-## ðŸ“¦ Environment Requirements
+## Environment Requirements
 
 ### **1. Server Requirements**
 - **PHP 8.1+**
