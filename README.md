@@ -72,27 +72,6 @@ README.md
 
 ## ⚙️ Konfigurasi Database
 
-Buat tabel:
-
-```sql
-CREATE TABLE persons (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    email VARCHAR(255),
-    nonce VARCHAR(64),	CREATE TABLE `contacts` (
- `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
- `name_enc` varchar(512) NOT NULL,
- `email_enc` varchar(512) NOT NULL,
- `nonce_hex` varchar(64) NOT NULL,
- `created_at` datetime DEFAULT NULL,
- `updated_at` datetime DEFAULT NULL,
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-```
-
 Set pada `.env`:
 
 ```
@@ -103,6 +82,11 @@ database.default.password =
 database.default.DBDriver = MySQLi
 database.default.DBPrefix =
 database.default.port = 3306
+```
+
+Jalankan Migration:
+```
+php spark migrate
 ```
 
 ## 🚀 Menjalankan Aplikasi
