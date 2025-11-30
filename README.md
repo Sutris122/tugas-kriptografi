@@ -25,6 +25,36 @@ keystream = HMAC_SHA256(key, nonce || counter)
 cipher = plaintext XOR keystream
 ```
 
+## ðŸ“¦ Environment Requirements
+
+### **1. Server Requirements**
+- **PHP 8.1+**
+- Ekstensi PHP:
+  - intl
+  - json
+  - mbstring
+  - openssl
+  - mysqli / pdo_mysql
+- **Composer 2.x**
+- **MySQL 5.7 atau 8.x**
+
+### **2. CodeIgniter**
+- CodeIgniter **4.4.x** atau lebih baru
+
+### **3. Web Server**
+- Apache 2.4+ (mod_rewrite ON), atau
+- Nginx 1.18+
+
+### **4. OS Support**
+- Windows 10/11
+- Linux (Ubuntu/Debian/CentOS)
+- macOS terbaru
+
+### **5. Tools Opsional**
+- Laragon / XAMPP / MAMP
+- Git
+- Postman / Bruno untuk testing
+
 ## 📂 Struktur Proyek
 
 ```
